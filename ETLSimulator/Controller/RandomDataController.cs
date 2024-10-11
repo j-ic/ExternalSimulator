@@ -16,17 +16,17 @@ public class RandomDataController
         _managedMqttClient = managedMqttClient;
         _managedMqttClient.ConnectionStateChangedAsync += async args =>
         {
-            Console.WriteLine("Connection state changed");
+            Console.WriteLine("AGV Client Connection state changed");
             await Task.CompletedTask;
         };
         _managedMqttClient.ConnectedAsync += async args =>
         {
-            Console.WriteLine($"Connected: {args.ConnectResult.ResultCode}");
+            Console.WriteLine($"AGV Client Connected: {args.ConnectResult.ResultCode}");
             await Task.CompletedTask;
         };
         _managedMqttClient.DisconnectedAsync += async args =>
         {
-            Console.WriteLine($"Disconnected: {args.Reason}");
+            Console.WriteLine($"AGV Client Disconnected: {args.Reason}");
             await Task.CompletedTask;
         };
         _random = new Random();
@@ -36,7 +36,7 @@ public class RandomDataController
 
     #region Public Methods
 
-    public async Task SendAGVLoop(string topic, string jobId, uint miliseconds)
+    public async Task SendAGVLoop(string topic, string jobId, uint milliseconds)
     {
         while (true)
         {
@@ -58,7 +58,7 @@ public class RandomDataController
             SendMachineDto(topic, payloadString);
             agvList.Clear();
 
-            await Task.Delay((int)miliseconds);
+            await Task.Delay((int)milliseconds);
         }
     }
 
