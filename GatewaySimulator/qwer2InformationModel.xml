@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UANodeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd">
+  <NamespaceUris>
+    <Uri>http://uvc.co.kr/FlexingCPS/</Uri>
+  </NamespaceUris>
+  <UAObject NodeId="ns=1;s=qwer2" BrowseName="qwer2">
+    <DisplayName>qwer2</DisplayName>
+    <References>
+      <Reference ReferenceType="i=35" IsForward="false">i=84</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/AVG/test2</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/IP</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/CPU</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/RAM</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/NETWORK_RECV</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/NETWORK_SEND</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/STATE</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/OS_TYPE</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/STORAGE</Reference>
+      <Reference ReferenceType="i=40">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;s=qwer2/AVG/test2" BrowseName="test2" SymbolicName="qwer2/AVG/test2">
+    <DisplayName>test2</DisplayName>
+    <References>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/AVG/test2/DEVICE_STATUS</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/AVG/test2/LED_SWITCH_ON_L</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/AVG/test2/CYCLE_TIME_SEC_L</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/AVG/test2/TEMPERATURE_L</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/AVG/test2/FEED_RATE_L</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/AVG/test2/PARTS_COUNT_L</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/AVG/test2/CUMULATIVE_COUNT</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/AVG/test2/DAILY_COUNT</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/AVG/test2/MAIN_AIR_PRESSURE</Reference>
+      <Reference ReferenceType="i=47">ns=1;s=qwer2/AVG/test2/STATE</Reference>
+      <Reference ReferenceType="i=40">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=qwer2/AVG/test2/DEVICE_STATUS" BrowseName="DEVICE_STATUS" SymbolicName="qwer2/AVG/test2/DEVICE_STATUS" DataType="i=1" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>DEVICE_STATUS</DisplayName>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/AVG/test2/LED_SWITCH_ON_L" BrowseName="LED_SWITCH_ON_L" SymbolicName="qwer2/AVG/test2/LED_SWITCH_ON_L" DataType="i=4" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>LED_SWITCH_ON_L</DisplayName>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/AVG/test2/CYCLE_TIME_SEC_L" BrowseName="CYCLE_TIME_SEC_L" SymbolicName="qwer2/AVG/test2/CYCLE_TIME_SEC_L" DataType="i=4" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>CYCLE_TIME_SEC_L</DisplayName>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/AVG/test2/TEMPERATURE_L" BrowseName="TEMPERATURE_L" SymbolicName="qwer2/AVG/test2/TEMPERATURE_L" DataType="i=4" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>TEMPERATURE_L</DisplayName>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/AVG/test2/FEED_RATE_L" BrowseName="FEED_RATE_L" SymbolicName="qwer2/AVG/test2/FEED_RATE_L" DataType="i=4" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>FEED_RATE_L</DisplayName>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/AVG/test2/PARTS_COUNT_L" BrowseName="PARTS_COUNT_L" SymbolicName="qwer2/AVG/test2/PARTS_COUNT_L" DataType="i=4" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>PARTS_COUNT_L</DisplayName>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/AVG/test2/CUMULATIVE_COUNT" BrowseName="CUMULATIVE_COUNT" SymbolicName="qwer2/AVG/test2/CUMULATIVE_COUNT" DataType="i=4" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>CUMULATIVE_COUNT</DisplayName>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/AVG/test2/DAILY_COUNT" BrowseName="DAILY_COUNT" SymbolicName="qwer2/AVG/test2/DAILY_COUNT" DataType="i=4" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>DAILY_COUNT</DisplayName>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/AVG/test2/MAIN_AIR_PRESSURE" BrowseName="MAIN_AIR_PRESSURE" SymbolicName="qwer2/AVG/test2/MAIN_AIR_PRESSURE" DataType="i=4" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>MAIN_AIR_PRESSURE</DisplayName>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/IP" BrowseName="IP Address" SymbolicName="qwer2/IP" DataType="i=12" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>IP Address</DisplayName>
+    <Description>Edge PC IP Address</Description>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/CPU" BrowseName="CPU Usage" SymbolicName="qwer2/CPU" DataType="i=12" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>CPU Usage</DisplayName>
+    <Description>Edge PC CPU Usage</Description>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/RAM" BrowseName="Memory Usage" SymbolicName="qwer2/RAM" DataType="i=12" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>Memory Usage</DisplayName>
+    <Description>Edge PC Memory Usage</Description>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/NETWORK_RECV" BrowseName="Network Receive" SymbolicName="qwer2/NETWORK_RECV" DataType="i=12" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>Network Receive</DisplayName>
+    <Description>Edge PC Network Receive</Description>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/NETWORK_SEND" BrowseName="Network Send" SymbolicName="qwer2/NETWORK_SEND" DataType="i=12" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>Network Send</DisplayName>
+    <Description>Edge PC Network Send</Description>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/STATE" BrowseName="State" SymbolicName="qwer2/STATE" DataType="i=12" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>State</DisplayName>
+    <Description>Edge State</Description>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/OS_TYPE" BrowseName="OS Type" SymbolicName="qwer2/OS_TYPE" DataType="i=12" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>OS Type</DisplayName>
+    <Description>Edge OS Type</Description>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/STORAGE" BrowseName="Storage" SymbolicName="qwer2/STORAGE" DataType="i=12" ValueRank="1" AccessLevel="3">
+    <DisplayName>Storage</DisplayName>
+    <Description>Edge Storage</Description>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=qwer2/AVG/test2/STATE" BrowseName="State" SymbolicName="qwer2/AVG/test2/STATE" DataType="i=12" ArrayDimensions="0" AccessLevel="3">
+    <DisplayName>State</DisplayName>
+    <Description>Device State</Description>
+    <References>
+      <Reference ReferenceType="i=40">i=63</Reference>
+    </References>
+  </UAVariable>
+</UANodeSet>
