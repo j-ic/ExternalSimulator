@@ -1,13 +1,13 @@
 ﻿using ETLSimulator.Controller;
 using ETLSimulator.Handler;
-using MQTTnet;
-using MQTTnet.Client;
-using MQTTnet.Extensions.ManagedClient;
 
 Console.WriteLine("ETL, World!");
 
+const string BROKER_ADDRESS = "localhost";
+const int PORT = 1883;
+
 var mqttClientHandlerForAGV 
-    = new MqttClientHandler("mqtt-input.flexing.ai", 1890);
+    = new MqttClientHandler(BROKER_ADDRESS, PORT);
 var randomDataController 
     = new RandomDataController(mqttClientHandlerForAGV.Client);
 
@@ -20,7 +20,7 @@ Task agv = Task.Run(async() =>
 });
 
 var mqttClientHandlerForTransport 
-    = new MqttClientHandler("mqtt-input.flexing.ai", 1890);
+    = new MqttClientHandler(BROKER_ADDRESS, PORT);
 var randomTransportDataController
     = new RandomTransportDataController(mqttClientHandlerForTransport.Client);
 
