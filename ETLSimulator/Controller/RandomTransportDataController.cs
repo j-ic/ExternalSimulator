@@ -39,7 +39,7 @@ public class RandomTransportDataController
 
     #region Public Methods
 
-    public async Task SendTransportLoop(string topic, string jobId, uint milliseconds)
+    public async Task SendTransportLoop(string topic, string jobId, uint milliseconds, int maxCount)
     {
         while (true)
         {
@@ -53,7 +53,7 @@ public class RandomTransportDataController
             if (jobMessageNode is not JsonObject jobMessageObject) { continue; }
             Dictionary<string, List<Transport>> transportList = new();
 
-            int listCount = _random.Next(1, 1000);
+            int listCount = _random.Next(maxCount);
             transportList = await Task.Run(() => CreateTransportList(listCount));
 
             string payloadString = JsonSerializer.Serialize(transportList);

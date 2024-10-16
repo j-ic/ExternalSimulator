@@ -36,7 +36,7 @@ public class RandomDataController
 
     #region Public Methods
 
-    public async Task SendAGVLoop(string topic, string jobId, uint milliseconds)
+    public async Task SendAGVLoop(string topic, string jobId, uint milliseconds, int maxCount)
     {
         while (true)
         {
@@ -50,7 +50,7 @@ public class RandomDataController
             if (jobMessageNode is not JsonObject jobMessageObject) { continue; }
             Dictionary<string, List<AGV>> agvList = new();
 
-            int listCount = _random.Next(1, 10000);
+            int listCount = _random.Next(1, maxCount);
             agvList = await Task.Run(() => CreateAGVList(listCount));
 
 
