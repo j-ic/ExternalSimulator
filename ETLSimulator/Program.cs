@@ -7,6 +7,20 @@ const string BROKER_ADDRESS = "localhost";
 const int PORT = 1883;
 const bool USE_TLS = false;
 
+var mqttClientHandlerForFacility
+    = new MqttClientHandler(BROKER_ADDRESS, PORT, USE_TLS);
+var randomFacilityDataController
+    = new RandomFacilityDataController(mqttClientHandlerForFacility.Client);
+
+Task agv = Task.Run(async () =>
+{
+    await randomFacilityDataController.SendFacilityLoop(
+       topic: "XR/data/exhibition/FACILITY",
+       jobId: "exhibition/FACILITY",
+       milliseconds: 300,
+       maxCount: 5);
+});
+
 var mqttClientHandlerForAGV
     = new MqttClientHandler(BROKER_ADDRESS, PORT, USE_TLS);
 var randomAGVDataController
