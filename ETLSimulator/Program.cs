@@ -26,7 +26,7 @@ var mqttClientHandlerForAGV
 var randomAGVDataController
     = new RandomAGVDataController(mqttClientHandlerForAGV.Client);
 
-Task agv = Task.Run(async() =>
+Task agv = Task.Run(async () =>
 {
     await randomAGVDataController.SendAGVLoop(
        topic: "XR/data/106a6c241b8797f52e1e77317b96a201/AGV",
@@ -35,7 +35,7 @@ Task agv = Task.Run(async() =>
        maxCount: 10000);
 });
 
-var mqttClientHandlerForTransport 
+var mqttClientHandlerForTransport
     = new MqttClientHandler(BROKER_ADDRESS, PORT, USE_TLS);
 var randomTransportDataController
     = new RandomTransportDataController(mqttClientHandlerForTransport.Client);
