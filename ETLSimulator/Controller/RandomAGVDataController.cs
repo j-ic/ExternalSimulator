@@ -11,7 +11,7 @@ public class RandomAGVDataController
 {
     #region Constructor
 
-    public RandomAGVDataController(IManagedMqttClient  managedMqttClient)
+    public RandomAGVDataController(IManagedMqttClient managedMqttClient)
     {
         _managedMqttClient = managedMqttClient;
         _managedMqttClient.ConnectionStateChangedAsync += async args =>
