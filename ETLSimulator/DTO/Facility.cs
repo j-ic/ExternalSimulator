@@ -7,17 +7,18 @@ public readonly record struct Facility
     [JsonPropertyName("LINE_ID")]
     public string LineId { get; init; }
     [JsonPropertyName("TEMPERATURE")]
-    public double Temperature { get; init; }
+    public float Temperature { get; init; }
     [JsonPropertyName("HUMIDITY")]
-    public double Humidity { get; init; }
+    public float Humidity { get; init; }
+    // 단위 m/s
     [JsonPropertyName("LINE_SPEED")]
-    public double LineSpeed { get; init; }
-    [JsonPropertyName("UTILIZATION_RATE")]
+    public float LineSpeed { get; init; }
     // 설비 가동률
-    public double UtilizationRate { get; init; }
-    [JsonPropertyName("PRODUCTIVITY")]
+    [JsonPropertyName("UTILIZATION_RATE")]
+    public float UtilizationRate { get; init; }
     // 설비 생산성
-    public double Productivity { get; init; }
+    [JsonPropertyName("PRODUCTIVITY")]
+    public float Productivity { get; init; }
     [JsonPropertyName("TIMESTAMP")]
     public DateTime Timestamp { get; init; }
 }
