@@ -47,56 +47,64 @@ public class TagDataController
                 [
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/AVG/test2/CUMULATIVE_COUNT",
+                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401014",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/AVG/test2/CYCLE_TIME_SEC_L",
+                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401015",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/AVG/test2/DAILY_COUNT",
+                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401016",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/AVG/test2/FEED_RATE_L",
+                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401017",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/AVG/test2/DEVICE_STATUS",
-                        Value = _random.Next(0, 2) == 0,
-                        SourceTime = DateTime.Now
-                    },
-                    new Tag
-                    {
-                        NodeIdentifier = $"{EDGE_ID}/AVG/test2/LED_SWITCH_ON_L",
+                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401018",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/AVG/test2/MAIN_AIR_PRESSURE",
-                        Value = _random.Next(short.MaxValue),
-                        SourceTime = DateTime.Now },
-                    new Tag
-                    {
-                        NodeIdentifier = $"{EDGE_ID}/AVG/test2/PARTS_COUNT_L",
+                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401019",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/AVG/test2/TEMPERATURE_L",
+                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401020",
                         Value = _random.Next(short.MaxValue),
-                        SourceTime = DateTime.Now },
+                        SourceTime = DateTime.Now
+                    },
+                    new Tag
+                    {
+                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401021",
+                        Value = _random.Next(short.MaxValue),
+                        SourceTime = DateTime.Now
+                    },
+                    new Tag
+                    {
+                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401022",
+                        Value = _random.Next(short.MaxValue),
+                        SourceTime = DateTime.Now
+                    },
+                    new Tag
+                    {
+                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401023",
+                        Value = _random.Next(short.MaxValue),
+                        SourceTime = DateTime.Now
+                    },
                 ],
                 Timestamp = DateTime.UtcNow
             };
@@ -245,7 +253,7 @@ public class TagDataController
 
     private readonly IManagedMqttClient _managedMqttClient;
     private readonly Random _random;
-    private const string EDGE_ID = "qwer2";
+    private const string EDGE_ID = "LeeHuyunFX";
     private const string DATA_TOPIC = $"Edge/data/{EDGE_ID}";
     private const string RESOURECE_TOPIC = "Edge/resource";
     private const string EDGE_STATE_TOPIC = "Edge/edgestate";

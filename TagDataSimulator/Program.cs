@@ -15,7 +15,7 @@ MqttClientOptions  mqttClientOptions
     = new MqttClientOptionsBuilder()
     .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V500)
     .WithClientId(Guid.NewGuid().ToString())
-    .WithTcpServer("mqtt - input.flexing.ai", 1890)
+    .WithTcpServer("localhost", 1883)
     //.WithTlsOptions(new MqttClientTlsOptionsBuilder().Build())
     .WithCleanSession()
     .Build();
@@ -35,7 +35,7 @@ _ = Task.Run(() => TagDataController.SendTagData(100));
 // _ = Task.Run(() => TagDataController.SendEdgeResource(3000));
 // _ = Task.Run(() => TagDataController.SendEdgeState(5000));
 // _ = Task.Run(() => TagDataController.SendDeviceState(7000));
-_ = Task.Run(() => TagDataController.SendEdgeStorage(7000));
+_ = Task.Run(() => TagDataController.SendEdgeStorage(100));
 
 // Set Exit Point
 var quitEvent = new ManualResetEvent(false);
