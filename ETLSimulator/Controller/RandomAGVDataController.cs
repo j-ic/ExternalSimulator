@@ -80,7 +80,9 @@ public class RandomAGVDataController
     private Dictionary<string, List<AGV>> CreateAGVList(int count)
     {
         List<AGV> agvList = [];
-        string[] vhlName = ["aa", "bb", "cc", "dd", "ee", "ff", "gg"];
+        string[] vhlName = ["AGV_001", "AGV_002", "AGV_003", "AGV_004",
+                            "AGV_005", "AGV_006", "AGV_007", "AGV_008"];
+
         for (int i = 0; i < count; i++)
         {
             var agvDto = new AGV
