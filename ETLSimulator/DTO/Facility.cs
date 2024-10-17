@@ -1,6 +1,6 @@
 ﻿namespace ETLSimulator.DTO;
 
-public readonly record struct FacilityData
+public readonly record struct Facility
 {
     public string LineId { get; init; }
     public double Temperature { get; init; }
