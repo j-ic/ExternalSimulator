@@ -12,7 +12,7 @@ var mqttClientHandlerForFacility
 var randomFacilityDataController
     = new RandomFacilityDataController(mqttClientHandlerForFacility.Client);
 
-Task agv = Task.Run(async () =>
+Task facility = Task.Run(async () =>
 {
     await randomFacilityDataController.SendFacilityLoop(
        topic: "XR/data/exhibition/FACILITY",
