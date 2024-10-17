@@ -7,11 +7,11 @@ using MQTTnet.Extensions.ManagedClient;
 
 namespace ETLSimulator.Controller;
 
-public class RandomDataController
+public class RandomAGVDataController
 {
     #region Constructor
 
-    public RandomDataController(IManagedMqttClient  managedMqttClient)
+    public RandomAGVDataController(IManagedMqttClient  managedMqttClient)
     {
         _managedMqttClient = managedMqttClient;
         _managedMqttClient.ConnectionStateChangedAsync += async args =>

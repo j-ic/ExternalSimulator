@@ -7,14 +7,14 @@ const string BROKER_ADDRESS = "localhost";
 const int PORT = 1883;
 const bool USE_TLS = false;
 
-var randomDataController 
-    = new RandomDataController(mqttClientHandlerForAGV.Client);
 var mqttClientHandlerForAGV
     = new MqttClientHandler(BROKER_ADDRESS, PORT, USE_TLS);
+var randomAGVDataController
+    = new RandomAGVDataController(mqttClientHandlerForAGV.Client);
 
 Task agv = Task.Run(async() =>
 {
-    await randomDataController.SendAGVLoop(
+    await randomAGVDataController.SendAGVLoop(
        topic: "XR/data/106a6c241b8797f52e1e77317b96a201/AGV",
        jobId: "106a6c241b8797f52e1e77317b96a201/AGV",
        milliseconds: 300,

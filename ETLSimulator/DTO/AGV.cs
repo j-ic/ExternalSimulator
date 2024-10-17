@@ -15,14 +15,12 @@ public readonly record struct AGV
     public string? VhlState { get; init; }
     [JsonPropertyName("BATT")]
     public int? Batt { get; init; }
-
     [JsonPropertyName("SUB_GOAL")]
     public int? SubGoal { get; init; }
     [JsonPropertyName("FINAL_GOAL")]
     public int? FinalGoal { get; init; }
     [JsonPropertyName("TIMESTAMP")]
     public DateTime? SendTime { get; init; }
-
     [JsonPropertyName("DEGREE")]
     public string? Degree { get; init; }
 }
