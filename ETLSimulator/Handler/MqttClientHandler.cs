@@ -13,18 +13,30 @@ public class MqttClientHandler
 {
     public IManagedMqttClient Client { get; private set; }
 
-    public MqttClientHandler(string brokerAddress, int port)
+    public MqttClientHandler(string brokerAddress, int port, bool useTls)
     {
-        var mqttClientOptions = new MqttClientOptionsBuilder()
+
+        var mqttClientOptionsBuilder = new MqttClientOptionsBuilder()
             .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V500)
             .WithClientId(Guid.NewGuid().ToString())
             .WithTcpServer(brokerAddress, port)
-            .WithCleanSession()
-            .Build();
+            .WithCleanSession();
+
+        if (useTls)
+        {
+            var tlsOptions = new MqttClientTlsOptionsBuilder()
+                .UseTls(true)
+                .WithIgnoreCertificateChainErrors(true)
+                .WithIgnoreCertificateRevocationErrors(true)
+                .WithAllowUntrustedCertificates(true)
+                .Build();
+
+            mqttClientOptionsBuilder.WithTlsOptions(tlsOptions);
+        }
 
         var managedMqttClientOptions = new ManagedMqttClientOptionsBuilder()
             .WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
-            .WithClientOptions(mqttClientOptions)
+            .WithClientOptions(mqttClientOptionsBuilder.Build())
             .Build();
 
         Client = new MqttFactory().CreateManagedMqttClient();

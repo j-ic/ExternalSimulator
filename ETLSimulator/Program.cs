@@ -5,11 +5,12 @@ Console.WriteLine("ETL, World!");
 
 const string BROKER_ADDRESS = "localhost";
 const int PORT = 1883;
+const bool USE_TLS = false;
 
-var mqttClientHandlerForAGV 
-    = new MqttClientHandler(BROKER_ADDRESS, PORT);
 var randomDataController 
     = new RandomDataController(mqttClientHandlerForAGV.Client);
+var mqttClientHandlerForAGV
+    = new MqttClientHandler(BROKER_ADDRESS, PORT, USE_TLS);
 
 Task agv = Task.Run(async() =>
 {
@@ -21,7 +22,7 @@ Task agv = Task.Run(async() =>
 });
 
 var mqttClientHandlerForTransport 
-    = new MqttClientHandler(BROKER_ADDRESS, PORT);
+    = new MqttClientHandler(BROKER_ADDRESS, PORT, USE_TLS);
 var randomTransportDataController
     = new RandomTransportDataController(mqttClientHandlerForTransport.Client);
 
