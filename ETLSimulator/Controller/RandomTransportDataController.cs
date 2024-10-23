@@ -53,7 +53,7 @@ public class RandomTransportDataController
             if (jobMessageNode is not JsonObject jobMessageObject) { continue; }
             Dictionary<string, List<Transport>> transportList = new();
 
-            int listCount = _random.Next(maxCount);
+            int listCount = maxCount; //_random.Next(maxCount);
             transportList = await Task.Run(() => CreateTransportList(listCount));
 
             string payloadString = JsonSerializer.Serialize(transportList);

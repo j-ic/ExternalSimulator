@@ -49,7 +49,7 @@ public class RandomAGVDataController
             if (jobMessageNode is not JsonObject jobMessageObject) { continue; }
             Dictionary<string, List<AGV>> agvList = new();
 
-            int listCount = _random.Next(1, maxCount);
+            int listCount = maxCount;//_random.Next(1, maxCount);
             agvList = await Task.Run(() => CreateAGVList(listCount));
 
 
