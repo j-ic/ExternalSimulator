@@ -47,64 +47,64 @@ public class TagDataController
                 [
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401014",
+                        NodeIdentifier = $"{EDGE_ID}/TSR/HVC/D400165",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401015",
+                        NodeIdentifier = $"{EDGE_ID}/TSR/HVC/D400166",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401016",
+                        NodeIdentifier = $"{EDGE_ID}/TSR/HVC/D400167",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401017",
+                        NodeIdentifier = $"{EDGE_ID}/TSR/HVC/D400170",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401018",
+                        NodeIdentifier = $"{EDGE_ID}/TSR/HVC/D400171",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401019",
+                        NodeIdentifier = $"{EDGE_ID}/TSR/HVC/D400172",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401020",
+                        NodeIdentifier = $"{EDGE_ID}/TSR/HVC/D400173",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401021",
+                        NodeIdentifier = $"{EDGE_ID}/TSR/HVC/D400174",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401022",
+                        NodeIdentifier = $"{EDGE_ID}/TSR/HVC/D400175",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
                     },
                     new Tag
                     {
-                        NodeIdentifier = $"{EDGE_ID}/NONE/LeeHuyunFX/D401023",
+                        NodeIdentifier = $"{EDGE_ID}/TSR/HVC/D400176",
                         Value = _random.Next(short.MaxValue),
                         SourceTime = DateTime.Now
-                    },
+                    }
                 ],
                 Timestamp = DateTime.UtcNow
             };
@@ -253,7 +253,7 @@ public class TagDataController
 
     private readonly IManagedMqttClient _managedMqttClient;
     private readonly Random _random;
-    private const string EDGE_ID = "LeeHuyunFX";
+    private const string EDGE_ID = "HVC";
     private const string DATA_TOPIC = $"Edge/data/{EDGE_ID}";
     private const string RESOURECE_TOPIC = "Edge/resource";
     private const string EDGE_STATE_TOPIC = "Edge/edgestate";
