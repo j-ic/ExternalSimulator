@@ -1,6 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Nodes;
 using ETLSimulator.DTO;
 using MQTTnet;
@@ -29,7 +27,6 @@ public class RandomFacilityDataController
             Console.WriteLine($"Facility Client Disconnected: {args.Reason}");
             await Task.CompletedTask;
         };
-        _random = new Random();
     }
     #endregion
 
@@ -49,7 +46,7 @@ public class RandomFacilityDataController
             if (jobMessageNode is not JsonObject jobMessageObject) { continue; }
             Dictionary<string, List<Facility>> facilityList = new();
 
-            int listCount = _random.Next(1, maxCount);
+            int listCount = Random.Shared.Next(1, maxCount);
             facilityList = await Task.Run(() => CreateFacilityList(listCount));
 
 
@@ -87,7 +84,7 @@ public class RandomFacilityDataController
         {
             var facilityDto = new Facility
             {
-                LineId = lineId[_random.Next(0, lineId.Length - 1)],
+                LineId = lineId[Random.Shared.Next(0, lineId.Length - 1)],
                 Temperature = GetRandomFloat(16.5f, 17.5f),
                 Humidity = GetRandomFloat(64.0f, 66.0f),
                 LineSpeed = GetRandomFloat(0.45f, 0.55f),
@@ -107,7 +104,7 @@ public class RandomFacilityDataController
 
     public float GetRandomFloat(float min, float max)
     {
-        float randomFloat = (float)Math.Round((_random.NextDouble() * (max - min) + min), 1);
+        float randomFloat = (float)Math.Round(Random.Shared.NextDouble() * (max - min) + min, 1);
         return randomFloat;
     }
 
@@ -116,7 +113,6 @@ public class RandomFacilityDataController
     #region Private Fields
 
     private readonly IManagedMqttClient _managedMqttClient;
-    private readonly Random _random;
 
     #endregion
 }

@@ -1,12 +1,7 @@
 ﻿using ETLSimulator.DTO;
 using MQTTnet.Extensions.ManagedClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.Json;
-using System.Threading.Tasks;
 using MQTTnet;
 
 namespace ETLSimulator.Controller;
@@ -32,8 +27,6 @@ public class RandomTransportDataController
             Console.WriteLine($"Transport Client Disconnected: {args.Reason}");
             await Task.CompletedTask;
         };
-
-        _random = new Random();
     }
     #endregion
 
@@ -53,7 +46,7 @@ public class RandomTransportDataController
             if (jobMessageNode is not JsonObject jobMessageObject) { continue; }
             Dictionary<string, List<Transport>> transportList = new();
 
-            int listCount = maxCount; //_random.Next(maxCount);
+            int listCount = maxCount;
             transportList = await Task.Run(() => CreateTransportList(listCount));
 
             string payloadString = JsonSerializer.Serialize(transportList);
@@ -92,32 +85,32 @@ public class RandomTransportDataController
 
         for (int i = 0; i < count; i++)
         {
-            string mainCarrId = mainCarrIdArray[_random.Next(0, mainCarrIdArray.Length - 1)];
-            string fromEqpId = eqpIdArray[_random.Next(0, eqpIdArray.Length - 1)];
-            string toEqpId = eqpIdArray[_random.Next(0, eqpIdArray.Length - 1)];
-            string currEqpId = eqpIdArray[_random.Next(0, eqpIdArray.Length - 1)];
+            string mainCarrId = mainCarrIdArray[Random.Shared.Next(0, mainCarrIdArray.Length - 1)];
+            string fromEqpId = eqpIdArray[Random.Shared.Next(0, eqpIdArray.Length - 1)];
+            string toEqpId = eqpIdArray[Random.Shared.Next(0, eqpIdArray.Length - 1)];
+            string currEqpId = eqpIdArray[Random.Shared.Next(0, eqpIdArray.Length - 1)];
 
             var transportDto = new Transport
             {
-                JobId = mainCarrId + "_" + _random.Next(0, 1000000).ToString(),
+                JobId = mainCarrId + "_" + Random.Shared.Next(0, 1000000).ToString(),
                 ReqTime = DateTime.Now,
                 MainCarrId = mainCarrId,
-                MovePrintNo = _random.Next(0, 100).ToString(),
-                ReqSysName = sysNameArray[_random.Next(0, sysNameArray.Length - 1)],
+                MovePrintNo = Random.Shared.Next(0, 100).ToString(),
+                ReqSysName = sysNameArray[Random.Shared.Next(0, sysNameArray.Length - 1)],
                 FromEqpId = fromEqpId,
-                FromPortId = fromEqpId + "_" + _random.Next(0, 100).ToString(),
-                FromRackId = fromEqpId + "_" + _random.Next(0, 100).ToString(),
+                FromPortId = fromEqpId + "_" + Random.Shared.Next(0, 100).ToString(),
+                FromRackId = fromEqpId + "_" + Random.Shared.Next(0, 100).ToString(),
                 ToEqpId = toEqpId,
-                ToPortId = toEqpId + "_" + _random.Next(0, 100).ToString(),
-                ToRackId = toEqpId + "_" + _random.Next(0, 100).ToString(),
+                ToPortId = toEqpId + "_" + Random.Shared.Next(0, 100).ToString(),
+                ToRackId = toEqpId + "_" + Random.Shared.Next(0, 100).ToString(),
                 CurEqpId = currEqpId,
-                CurPortId = currEqpId + "_" + _random.Next(0, 100).ToString(),
-                CurRackId = currEqpId + "_" + _random.Next(0, 100).ToString(),
-                MoveSts = moveStsArray[_random.Next(0, moveStsArray.Length - 1)],
+                CurPortId = currEqpId + "_" + Random.Shared.Next(0, 100).ToString(),
+                CurRackId = currEqpId + "_" + Random.Shared.Next(0, 100).ToString(),
+                MoveSts = moveStsArray[Random.Shared.Next(0, moveStsArray.Length - 1)],
                 CreateTime = DateTime.Now,
                 TimeStamp = DateTime.Now,
-                CreateUserId = sysNameArray[_random.Next(0, sysNameArray.Length - 1)],
-                UpdateUserId = sysNameArray[_random.Next(0, sysNameArray.Length - 1)]
+                CreateUserId = sysNameArray[Random.Shared.Next(0, sysNameArray.Length - 1)],
+                UpdateUserId = sysNameArray[Random.Shared.Next(0, sysNameArray.Length - 1)]
             };
 
             transportList.Add(transportDto);
@@ -145,7 +138,6 @@ public class RandomTransportDataController
     #region Private Fields
 
     private readonly IManagedMqttClient _managedMqttClient;
-    private readonly Random _random;
 
     #endregion
 }
