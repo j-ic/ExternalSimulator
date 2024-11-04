@@ -28,7 +28,6 @@ public class RandomAGVDataController
             Console.WriteLine($"AGV Client Disconnected: {args.Reason}");
             await Task.CompletedTask;
         };
-        _random = new Random();
     }
 
     #endregion
@@ -49,7 +48,7 @@ public class RandomAGVDataController
             if (jobMessageNode is not JsonObject jobMessageObject) { continue; }
             Dictionary<string, List<AGV>> agvList = new();
 
-            int listCount = maxCount;//_random.Next(1, maxCount);
+            int listCount = maxCount;
             agvList = await Task.Run(() => CreateAGVList(listCount));
 
 
@@ -87,15 +86,15 @@ public class RandomAGVDataController
         {
             var agvDto = new AGV
             {
-                VhlName = vhlName[_random.Next(0, vhlName.Length-1)],
-                X = _random.Next(0, 100),
-                Y = _random.Next(0, 100),
+                VhlName = vhlName[Random.Shared.Next(0, vhlName.Length-1)],
+                X = Random.Shared.Next(0, 100),
+                Y = Random.Shared.Next(0, 100),
                 VhlState = "VhlState",
-                Batt = _random.Next(0, 100),
-                SubGoal = _random.Next(0, 100),
-                FinalGoal = _random.Next(0, 100),
+                Batt = Random.Shared.Next(0, 100),
+                SubGoal = Random.Shared.Next(0, 100),
+                FinalGoal = Random.Shared.Next(0, 100),
                 SendTime = DateTime.Now,
-                Degree = _random.Next(0, 100).ToString(),
+                Degree = Random.Shared.Next(0, 100).ToString(),
             };
 
             agvList.Add(agvDto);
@@ -112,7 +111,6 @@ public class RandomAGVDataController
     #region Private Fields
 
     private readonly IManagedMqttClient _managedMqttClient;
-    private readonly Random _random;
 
     #endregion
 }
