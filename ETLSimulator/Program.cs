@@ -7,10 +7,10 @@ const string BROKER_ADDRESS = "localhost";
 const int PORT = 1883;
 const bool USE_TLS = false;
 
-var mqttClientHandlerForFacility
-    = new MqttClientHandler(BROKER_ADDRESS, PORT, USE_TLS);
-var randomFacilityDataController
-    = new RandomFacilityDataController(mqttClientHandlerForFacility.Client);
+//var mqttClientHandlerForFacility
+//    = new MqttClientHandler(BROKER_ADDRESS, PORT, USE_TLS);
+//var randomFacilityDataController
+//    = new RandomFacilityDataController(mqttClientHandlerForFacility.Client);
 
 // Task facility = Task.Run(async () =>
 // {
