@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using MQTTnet;
 using MQTTnet.Extensions.ManagedClient;
+using System.Timers;
 
 namespace ETLSimulator.Controller;
 
@@ -28,6 +29,9 @@ public class RandomAGVDataController
             Console.WriteLine($"AGV Client Disconnected: {args.Reason}");
             await Task.CompletedTask;
         };
+
+        _timer = new System.Timers.Timer(60000);
+        _timer.Elapsed += PrintMessageCount;
     }
 
     #endregion
@@ -36,6 +40,8 @@ public class RandomAGVDataController
 
     public async Task SendAGVLoop(string topic, string jobId, uint milliseconds, int maxCount)
     {
+        _timer.Start();
+
         while (true)
         {
             var jobMessage = new 
@@ -55,6 +61,7 @@ public class RandomAGVDataController
             string payloadString = JsonSerializer.Serialize(agvList);
             SendMachineDto(topic, payloadString);
             agvList.Clear();
+            Interlocked.Increment(ref _messageCount);
 
             await Task.Delay((int)milliseconds);
         }
@@ -106,11 +113,20 @@ public class RandomAGVDataController
         return dict;
     }
 
+    private void PrintMessageCount(object? sender, ElapsedEventArgs e)
+    {
+        string timestamp = DateTime.Now.ToString("hh:mm:ss.fff");
+        Console.WriteLine($"[{timestamp}] Published AGV Message Count : {_messageCount}");
+        //Interlocked.Exchange(ref _messageCount, 0);
+    }
+
     #endregion
 
     #region Private Fields
 
     private readonly IManagedMqttClient _managedMqttClient;
+    private volatile int _messageCount;
+    private System.Timers.Timer _timer;
 
     #endregion
 }

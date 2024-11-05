@@ -3,7 +3,7 @@ using ETLSimulator.Handler;
 
 Console.WriteLine("ETL, World!");
 
-const string BROKER_ADDRESS = "localhost";
+const string BROKER_ADDRESS = "220.90.135.6";
 const int PORT = 1883;
 const bool USE_TLS = false;
 
@@ -22,7 +22,7 @@ const bool USE_TLS = false;
 // });
 
 var mqttClientHandlerForAGV
-    = new MqttClientHandler(BROKER_ADDRESS, PORT, USE_TLS);
+    = new MqttClientHandler("220.90.135.5", PORT, USE_TLS);
 var randomAGVDataController
     = new RandomAGVDataController(mqttClientHandlerForAGV.Client);
 
@@ -32,7 +32,7 @@ Task agv = Task.Run(async () =>
        topic: "XR/data/106a6c241b8797f52e1e77317b96a201/AGV",
        jobId: "106a6c241b8797f52e1e77317b96a201/AGV",
        milliseconds: 100,
-       maxCount: 10_000);
+       maxCount: 1000);
 });
 
 var mqttClientHandlerForTransport
@@ -46,7 +46,7 @@ Task transport = Task.Run(async () =>
       topic: "XR/data/b0fce4b111ab01ab148c94de81120404/TRANSPORT_JOB",
       jobId: "b0fce4b111ab01ab148c94de81120404/TRANSPORT_JOB",
       milliseconds: 100,
-      maxCount: 10_000);
+      maxCount: 1000);
 });
 
 // Set Exit Point

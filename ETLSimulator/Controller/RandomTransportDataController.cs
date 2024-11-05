@@ -3,6 +3,7 @@ using MQTTnet.Extensions.ManagedClient;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using MQTTnet;
+using System.Timers;
 
 namespace ETLSimulator.Controller;
 
@@ -27,6 +28,9 @@ public class RandomTransportDataController
             Console.WriteLine($"Transport Client Disconnected: {args.Reason}");
             await Task.CompletedTask;
         };
+
+        _timer = new System.Timers.Timer(60000);
+        _timer.Elapsed += PrintMessageCount;
     }
     #endregion
 
@@ -34,6 +38,7 @@ public class RandomTransportDataController
 
     public async Task SendTransportLoop(string topic, string jobId, uint milliseconds, int maxCount)
     {
+        _timer.Start();
         while (true)
         {
             var jobMessage = new
@@ -52,10 +57,15 @@ public class RandomTransportDataController
             string payloadString = JsonSerializer.Serialize(transportList);
             SendMachineDto(topic, payloadString);
             transportList.Clear();
+            Interlocked.Increment(ref _messageCount);
 
             await Task.Delay((int)milliseconds);
         }
     }
+
+    #endregion
+
+    #region Private Methods
 
     private Dictionary<string, List<Transport>> CreateTransportList(int count)
     {
@@ -133,11 +143,20 @@ public class RandomTransportDataController
         _managedMqttClient.EnqueueAsync(message);
     }
 
+    private void PrintMessageCount(object? sender, ElapsedEventArgs e)
+    {
+        string timestamp = DateTime.Now.ToString("hh:mm:ss.fff");
+        Console.WriteLine($"[{timestamp}] Published Transport Message Count : {_messageCount}");
+        //Interlocked.Exchange(ref _messageCount, 0);
+    }
+
     #endregion 
 
     #region Private Fields
 
     private readonly IManagedMqttClient _managedMqttClient;
+    private volatile int _messageCount;
+    private System.Timers.Timer _timer;
 
     #endregion
 }
