@@ -1,0 +1,11 @@
+@ETLSimulator_influx_HostAddress = http://localhost:5132
+
+GET {{ETLSimulator_influx_HostAddress}}/todos/
+Accept: application/json
+
+###
+
+GET {{ETLSimulator_influx_HostAddress}}/todos/1
+Accept: application/json
+
+###

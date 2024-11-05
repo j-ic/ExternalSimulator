@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagDataSimulator", "TagData
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingContracts", "MessagingContracts\MessagingContracts.csproj", "{EA964F9B-B61B-42DC-B7F7-9B004A5E9D59}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETLSimulator-influx", "ETLSimulator-influx\ETLSimulator-influx.csproj", "{04BAE725-E5DD-4FA8-9B64-C3381FCB6477}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{EA964F9B-B61B-42DC-B7F7-9B004A5E9D59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA964F9B-B61B-42DC-B7F7-9B004A5E9D59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA964F9B-B61B-42DC-B7F7-9B004A5E9D59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04BAE725-E5DD-4FA8-9B64-C3381FCB6477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04BAE725-E5DD-4FA8-9B64-C3381FCB6477}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04BAE725-E5DD-4FA8-9B64-C3381FCB6477}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04BAE725-E5DD-4FA8-9B64-C3381FCB6477}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
