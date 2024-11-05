@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
-namespace ETLSimulator.DTO;
+namespace MessagingContracts.ETL;
 
 public readonly record struct Facility
 {

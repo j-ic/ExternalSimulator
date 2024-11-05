@@ -1,4 +1,4 @@
-﻿using ETLSimulator.DTO;
+﻿using MessagingContracts.ETL;
 using MQTTnet.Extensions.ManagedClient;
 using System.Text.Json.Nodes;
 using System.Text.Json;

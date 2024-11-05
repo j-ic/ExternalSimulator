@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace ETLSimulator.DTO;
+namespace MessagingContracts.ETL;
 
 public readonly record struct AGV
 {
