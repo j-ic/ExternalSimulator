@@ -57,7 +57,6 @@ public class RandomAGVDataController
             int listCount = maxCount;
             agvList = await Task.Run(() => CreateAGVList(listCount));
 
-
             string payloadString = JsonSerializer.Serialize(agvList);
             SendMachineDto(topic, payloadString);
             agvList.Clear();
