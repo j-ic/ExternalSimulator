@@ -1,6 +1,8 @@
 using System.Collections.Concurrent;
+using System.Data;
 using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
+using InfluxDB.Client.Core.Exceptions;
 using InfluxDB.Client.Writes;
 using MessagingContracts.ETL;
 
@@ -63,19 +65,128 @@ public class InfluxService(
             }
         });
 
-        const int INFLUX_BATCH_SIZE = 5000;
         List<PointData> pointList = [.. points];
+        await BatchWritePointData(pointList);
+    }
 
-        for (int i = 0; i < pointList.Count; i += INFLUX_BATCH_SIZE)
+    private async Task BatchWritePointData(List<PointData> points)
+    {
+        const int INFLUX_BATCH_SIZE = 5000;
+        try
         {
-            int chunkSize = Math.Min(INFLUX_BATCH_SIZE, pointList.Count - i);
-            List<PointData> chunk = pointList.GetRange(i, chunkSize);
+            for (int i = 0; i < points.Count; i += INFLUX_BATCH_SIZE)
+            {
+                int chunkSize = Math.Min(INFLUX_BATCH_SIZE, points.Count - i);
+                List<PointData> chunk = points.GetRange(i, chunkSize);
+                await WritePointData(chunk);
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "InfluxDB Write Error : {Message}", ex.Message);
+        }
+    }
+
+    private async Task WritePointData(List<PointData> points)
+    {
+        try
+        {
             await influxClient
                     .GetWriteApiAsync()
-                    .WritePointsAsync(chunk, bucket, org);
+                    .WritePointsAsync(points, bucket, org);
+        }
+        catch (TaskCanceledException ex)
+        {
+            logger.LogWarning(ex,
+                "InfluxDB Write Task Canceled: {Message}", ex.Message);
+        }
+        catch (UnprocessableEntityException ex)
+        {
+            logger.LogError(ex, "InfluxDB Type Error : {Message}", ex.Message);
+            LogInvalidPoints(points);
+        }
+        catch (HttpException ex)
+        {
+            logger.LogError(ex, "InfluxDB Http Error : {Message}", ex.Message);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "InfluxDB Write Error : {Message}", ex.Message);
+        }
+    }
 
-            logger.LogInformation("{time}: {chunkSize} requested.",
-                DateTime.Now.ToString("HH:mm:ss.fff"), chunkSize);
+    private void LogInvalidPoints(List<PointData> points)
+    {
+        // Limit the number of points to log to prevent excessive logging
+        int maxPointsToLog = 5;
+        var pointsToLog = points.Take(maxPointsToLog);
+
+        foreach (var point in pointsToLog)
+        {
+            string lineProtocol = point.ToLineProtocol();
+
+            // Parse the Line Protocol to extract measurement and timestamp
+            ParseLineProtocol(lineProtocol, out string measurement, out string timestamp);
+
+            logger.LogInformation(
+                "Invalid Point - Measurement: {Measurement}, Timestamp: {Timestamp}",
+                measurement,
+                timestamp);
+        }
+
+        if (points.Count > maxPointsToLog)
+        {
+            logger.LogInformation(
+                "Total invalid points: {TotalInvalidPoints}. Logged first {LoggedPointsCount} points.",
+                points.Count,
+                maxPointsToLog);
+        }
+    }
+
+    private void ParseLineProtocol(string lineProtocol, out string measurement, out string timestamp)
+    {
+        // Initialize output variables
+        measurement = string.Empty;
+        timestamp = string.Empty;
+
+        try
+        {
+            // Line Protocol format: measurement[,tags] fields [timestamp]
+            // Split the Line Protocol into components
+            // We need to handle cases where tags are present or absent
+
+            // Split by space to separate the main components
+            string[] spaceParts = lineProtocol.Split(' ');
+
+            if (spaceParts.Length >= 2)
+            {
+                // The first part contains measurement and tags
+                string measurementAndTags = spaceParts[0];
+
+                // The last part may be the timestamp
+                if (spaceParts.Length == 3)
+                {
+                    timestamp = spaceParts[2];
+                }
+
+                // Extract measurement name (it's before the first comma)
+                int commaIndex = measurementAndTags.IndexOf(',');
+
+                if (commaIndex >= 0)
+                {
+                    // Measurement with tags
+                    measurement = measurementAndTags.Substring(0, commaIndex);
+                }
+                else
+                {
+                    // Measurement without tags
+                    measurement = measurementAndTags;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Failed to parse Line Protocol: {LineProtocol}", lineProtocol);
         }
     }
 
