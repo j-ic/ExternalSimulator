@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Data;
+using System.Timers;
 using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Core.Exceptions;
@@ -8,14 +9,36 @@ using MessagingContracts.ETL;
 
 namespace ETLSimulator_influx;
 
-public class InfluxService(
-    IInfluxDBClient influxClient,
-    ILogger<InfluxService> logger,
-    string bucket,
-    string org,
-    double delaySeconds)
-: IHostedService
+public class InfluxService: IHostedService
 {
+    #region Constructor
+
+    public InfluxService(
+        IInfluxDBClient influxClient,
+        ILogger<InfluxService> logger,
+        string bucket,
+        string org,
+        string measurementName,
+        int pointDataCount,
+        double delaySeconds)
+    {
+        _influxClient = influxClient;
+        _logger = logger;
+        _bucket = bucket;
+        _org = org;
+        _measurementName = measurementName;
+        _pointDataCount = pointDataCount;
+        _delaySeconds = delaySeconds;
+
+        _timer = new System.Timers.Timer(TimeSpan.FromMinutes(1));
+        _timer.Elapsed += PrintPointCount;
+        _timer.Start();
+    }
+
+    #endregion
+
+    #region public methods
+
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         while (cancellationToken.IsCancellationRequested == false)
@@ -23,24 +46,28 @@ public class InfluxService(
             try
             {
                 await WriteDataAsync();
-                await Task.Delay(TimeSpan.FromSeconds(delaySeconds), cancellationToken);
+                await Task.Delay(TimeSpan.FromSeconds(_delaySeconds), cancellationToken);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error: {Message}", ex.Message);
+                _logger.LogError(ex, "Error: {Message}", ex.Message);
             }
         }
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        influxClient.Dispose();
+        _influxClient.Dispose();
         return Task.CompletedTask;
     }
 
+    #endregion
+
+    #region private methods
+
     private async Task WriteDataAsync()
     {
-        Dictionary<string, List<AGV>> agvList = CreateAGVList(10_000);
+        Dictionary<string, List<AGV>> agvList = CreateAGVList(_pointDataCount);
         ConcurrentBag<PointData> points = [];
         Partitioner<List<AGV>> partitioner 
                 = Partitioner.Create(agvList.Values.ToList(), true);
@@ -50,7 +77,7 @@ public class InfluxService(
             foreach (var item in agv)
             {
                 PointData.Builder point = PointData.Builder
-                    .Measurement("AGV")
+                    .Measurement(_measurementName)
                     .Tag(nameof(item.VhlName), item.VhlName)
                     .Field(nameof(item.X), (double)item.X!)
                     .Field(nameof(item.Y), (double)item.Y!)
@@ -59,7 +86,7 @@ public class InfluxService(
                     .Field(nameof(item.SubGoal), (double)item.SubGoal!)
                     .Field(nameof(item.FinalGoal), (double)item.FinalGoal!)
                     .Field(nameof(item.Degree), item.Degree)
-                    .Timestamp(DateTime.UtcNow.AddHours(-3), WritePrecision.Ns);
+                    .Timestamp(DateTime.UtcNow, WritePrecision.Ns);
 
                 points.Add(point.ToPointData());
             }
@@ -79,11 +106,12 @@ public class InfluxService(
                 int chunkSize = Math.Min(INFLUX_BATCH_SIZE, points.Count - i);
                 List<PointData> chunk = points.GetRange(i, chunkSize);
                 await WritePointData(chunk);
+
             }
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "InfluxDB Write Error : {Message}", ex.Message);
+            _logger.LogError(ex, "InfluxDB Write Error : {Message}", ex.Message);
         }
     }
 
@@ -91,27 +119,30 @@ public class InfluxService(
     {
         try
         {
-            await influxClient
+            await _influxClient
                     .GetWriteApiAsync()
-                    .WritePointsAsync(points, bucket, org);
+                    .WritePointsAsync(points, _bucket, _org);
+
+            // Increment the message count for each successfully written point
+            Interlocked.Add(ref _pointCount, points.Count);
         }
         catch (TaskCanceledException ex)
         {
-            logger.LogWarning(ex,
+            _logger.LogWarning(ex,
                 "InfluxDB Write Task Canceled: {Message}", ex.Message);
         }
         catch (UnprocessableEntityException ex)
         {
-            logger.LogError(ex, "InfluxDB Type Error : {Message}", ex.Message);
+            _logger.LogError(ex, "InfluxDB Type Error : {Message}", ex.Message);
             LogInvalidPoints(points);
         }
         catch (HttpException ex)
         {
-            logger.LogError(ex, "InfluxDB Http Error : {Message}", ex.Message);
+            _logger.LogError(ex, "InfluxDB Http Error : {Message}", ex.Message);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "InfluxDB Write Error : {Message}", ex.Message);
+            _logger.LogError(ex, "InfluxDB Write Error : {Message}", ex.Message);
         }
     }
 
@@ -128,7 +159,7 @@ public class InfluxService(
             // Parse the Line Protocol to extract measurement and timestamp
             ParseLineProtocol(lineProtocol, out string measurement, out string timestamp);
 
-            logger.LogInformation(
+            _logger.LogInformation(
                 "Invalid Point - Measurement: {Measurement}, Timestamp: {Timestamp}",
                 measurement,
                 timestamp);
@@ -136,7 +167,7 @@ public class InfluxService(
 
         if (points.Count > maxPointsToLog)
         {
-            logger.LogInformation(
+            _logger.LogInformation(
                 "Total invalid points: {TotalInvalidPoints}. Logged first {LoggedPointsCount} points.",
                 points.Count,
                 maxPointsToLog);
@@ -186,21 +217,20 @@ public class InfluxService(
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, "Failed to parse Line Protocol: {LineProtocol}", lineProtocol);
+            _logger.LogWarning(ex, "Failed to parse Line Protocol: {LineProtocol}", lineProtocol);
         }
     }
 
     private static Dictionary<string, List<AGV>> CreateAGVList(int count)
     {
         List<AGV> agvList = [];
-        string[] vhlName = ["AGV_001", "AGV_002", "AGV_003", "AGV_004",
-                            "AGV_005", "AGV_006", "AGV_007", "AGV_008"];
+        const string VAL_NAME = "AGV_001";
 
         for (int i = 0; i < count; i++)
         {
             var agvDto = new AGV
             {
-                VhlName = vhlName[Random.Shared.Next(0, vhlName.Length-1)],
+                VhlName = VAL_NAME,
                 X = Random.Shared.Next(0, 100),
                 Y = Random.Shared.Next(0, 100),
                 VhlState = "VhlState",
@@ -218,4 +248,34 @@ public class InfluxService(
 
         return dict;
     }
+
+    private void PrintPointCount(object? sender, ElapsedEventArgs e)
+    {
+        string timestamp = DateTime.Now.ToString("hh:mm:ss.fff");
+        string formattedPointCount = _pointCount.ToString("N0");
+        _logger.LogInformation(
+            "Total Points: {PointCount} - {Timestamp}", 
+            formattedPointCount, 
+            timestamp);
+
+        if (_pointCount >= int.MaxValue) { Interlocked.Exchange(ref _pointCount, 0); }
+    }
+
+    #endregion
+
+    #region private fields
+
+    private readonly IInfluxDBClient _influxClient;
+    private readonly ILogger _logger;
+    private readonly string _bucket;
+    private readonly string _org;
+    private readonly string _measurementName;
+    private readonly int _pointDataCount;
+    private readonly double _delaySeconds;
+
+    private volatile int _pointCount;
+    private readonly System.Timers.Timer _timer;
+
+
+    #endregion
 }
