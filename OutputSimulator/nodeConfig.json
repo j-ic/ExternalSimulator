@@ -1,0 +1,46 @@
+{
+  "Nodes": [
+    {
+      "NodeID": "UVCE-01_01-001/DEV/TAG1_Bool",
+      "DataType": "bool",
+      "Value": "RANDOM",
+      "Period": 2000
+    },
+    {
+      "NodeID": "UVCE-01_01-001/DEV/TAG2_FixedInt",
+      "DataType": "int",
+      "Value": "RANDOM",
+      "Period": 2000
+    },
+    {
+      "NodeID": "UVCE-01_01-001/DEV/TAG3_RandomInt",
+      "DataType": "int",
+      "Value": "RANDOM",
+      "Period": 2000
+    },
+    {
+      "NodeID": "UVCE-01_01-001/DEV/TAG4_FixedFloat",
+      "DataType": "float",
+      "Value": "RANDOM",
+      "Period": 1000
+    },
+    {
+      "NodeID": "UVCE-01_01-001/DEV/TAG5_RandomFloat",
+      "DataType": "float",
+      "Value": "RANDOM",
+      "Period": 1000
+    },
+    {
+      "NodeID": "UVCE-01_01-001/DEV/TAG6_FIxedString",
+      "DataType": "string",
+      "Value": "UVC Testbed",
+      "Period": 2000
+    },
+    {
+      "NodeID": "UVCE-01_01-001/DEV/TAG7_RandomString",
+      "DataType": "string",
+      "Value": "RANDOM",
+      "Period": 1500
+    }
+  ]
+}
