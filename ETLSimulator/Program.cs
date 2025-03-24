@@ -12,22 +12,25 @@ MqttClientHandler mqttClientHandlerForTotal
 IntegrationController totalDataController
     = new IntegrationController(mqttClientHandlerForTotal.Client);
 
+const int MILLI_SECONDS = 1_000;
+const int MAX_COUNT = 1;
+
 _ = Task.Run(async () =>
 {
     await totalDataController.SendAGVLoop(
-       topic: "COUNT_TEST/data/106a6c241b8797f52e1e77317b96a201/AGV",
-       jobId: "106a6c241b8797f52e1e77317b96a201/AGV",
-       milliseconds: 10,
-       maxCount: 10_000);
+       topic: "XR/data/4e7a17a46bbf09a94af971efe37a8340/AGV",
+       jobId: "4e7a17a46bbf09a94af971efe37a8340/AGV",
+       milliseconds: MILLI_SECONDS,
+       maxCount: MAX_COUNT);
 });
 
 _ = Task.Run(async () =>
 {
     await totalDataController.SendTransportLoop(
-       topic: "COUNT_TEST/data/106a6c241b8797f52e1e77317b96a201/AGV",
-       jobId: "106a6c241b8797f52e1e77317b96a201/AGV",
-       milliseconds: 10,
-       maxCount: 10_000);
+       topic: "XR/data/b0fce4b111ab01ab148c94de81120404/TRANSPORT_JOB",
+       jobId: "b0fce4b111ab01ab148c94de81120404/TRANSPORT_JOB",
+       milliseconds: MILLI_SECONDS,
+       maxCount: MAX_COUNT);
 });
 
 // Set Exit Point
