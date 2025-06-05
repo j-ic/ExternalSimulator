@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Timers;
 using MQTTnet;
 using MQTTnet.Extensions.ManagedClient;
+using MessagingContracts.Redis;
 
 namespace ETLSimulator.Controller;
 
@@ -106,6 +107,46 @@ public class IntegrationController
             Interlocked.Increment(ref _messageCount);
 
             // Delay for specified milliseconds
+            await Task.Delay(millisecondInt);
+        }
+    }
+
+    public async Task SendRedisTestLoop(string topic, uint milliseconds, int maxCount)
+    {
+        // Convert milliseconds to int
+        int millisecondInt = (int)milliseconds;
+
+        while (true)
+        {
+            var redisDto = new RedisTestDto(
+                Temperature: Random.Shared.Next(0, 666),
+                Humidity: Random.Shared.Next(0, 100),
+                Vibration: Random.Shared.NextSingle() * 100f,
+                Pressure: Random.Shared.NextSingle() * 100f,
+                MotorCurrent: Random.Shared.Next(0, 100),
+                MotorVoltage: Random.Shared.Next(0, 100),
+                SpindleSpeed: Random.Shared.Next(0, 100),
+                FeedRate: Random.Shared.Next(0, 100),
+                OilLevel: Random.Shared.Next(0, 100),
+                CoolantTemperature: Random.Shared.NextSingle() * 100f,
+                ProductCount: Random.Shared.Next(0, 1000),
+                ErrorCode: "E" + Random.Shared.Next(1000, 9999).ToString(),
+                IsRunning: Random.Shared.Next(0, 2) == 1,
+                DoorOpen: Random.Shared.Next(0, 2) == 1,
+                OverHeatingWarning: Random.Shared.Next(0, 2) == 1,
+                Hehe: Random.Shared.Next(0, 2) == 1);
+
+            string payloadString = JsonSerializer.Serialize(redisDto);
+
+            int lineNumber = Random.Shared.Next(1, 21);
+            int machineNumber = Random.Shared.Next(1, 3126);
+            string randomTopic
+                = $"{topic}/Line{lineNumber:D2}/{machineNumber}";
+
+            await PublishMqtt(randomTopic, payloadString);
+
+            Interlocked.Increment(ref _messageCount);
+
             await Task.Delay(millisecondInt);
         }
     }
