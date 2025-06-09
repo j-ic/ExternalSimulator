@@ -68,6 +68,13 @@ public class IntegrationController
             // Serialize AGV list to JSON string
             string agvPayload = JsonSerializer.Serialize(agvList);
 
+            // Calculate payload size
+            int payloadSize 
+                = System.Text.Encoding.UTF8.GetByteCount(agvPayload);
+
+            // Log payload size
+            Interlocked.Add(ref _totalBytesSent, payloadSize);
+
             // Publish AGV data to MQTT
             await PublishMqtt(topic, agvPayload);
 
@@ -99,6 +106,13 @@ public class IntegrationController
 
             // Serialize transport list to JSON string
             string payloadString = JsonSerializer.Serialize(transportList);
+
+            // Calculate payload size
+            int payloadSize
+                = System.Text.Encoding.UTF8.GetByteCount(payloadString);
+
+            // Log payload size
+            Interlocked.Add(ref _totalBytesSent, payloadSize);
 
             // Publish transport data to MQTT
             await PublishMqtt(topic, payloadString);
@@ -142,6 +156,12 @@ public class IntegrationController
             int machineNumber = Random.Shared.Next(1, 3126);
             string randomTopic
                 = $"{topic}/Line{lineNumber:D2}/{machineNumber}";
+
+            // Calculate payload size
+            int payloadSize 
+                = System.Text.Encoding.UTF8.GetByteCount(payloadString);
+            // Log payload size
+            Interlocked.Add(ref _totalBytesSent, payloadSize);
 
             await PublishMqtt(randomTopic, payloadString);
 
@@ -298,12 +318,22 @@ public class IntegrationController
     /// </summary>
     private void PrintMessageCount(object? sender, ElapsedEventArgs e)
     {
-        // Print message count
-        string timestamp = DateTime.Now.ToString("hh:mm:ss.fff");
-        Console.WriteLine($"[{timestamp}] Total Published Message Count : {_messageCount}");
+        // Atomically reset the counters and get their previous values.
+        // This prevents race conditions and data loss.
+        long lastMinuteTotalBytes
+            = Interlocked.Exchange(ref _totalBytesSent, 0);
+        int lastMinuteMessageCount
+            = Interlocked.Exchange(ref _messageCount, 0);
 
-        // Reset message count if it exceeds int.MaxValue
-        if (_messageCount >= int.MaxValue) { Interlocked.Exchange(ref _messageCount, 0); }
+        // Now, perform calculations with the captured values for the last minute.
+        double totalMegaBytes = lastMinuteTotalBytes / (1024.0 * 1024.0);
+
+        // Print stats for the last minute. (Using HH for 24-hour format)
+        string timestamp = DateTime.Now.ToString("HH:mm:ss.fff");
+        Console.WriteLine(
+            $"[{timestamp}] Stats (Last 1 Min) -> " +
+            $"Messages: {lastMinuteMessageCount}, " +
+            $"Data Sent: {totalMegaBytes:F2} MB");
     }
 
     #endregion
@@ -311,7 +341,8 @@ public class IntegrationController
     #region Private Fields
 
     private readonly IManagedMqttClient _managedMqttClient;
-    private volatile int _messageCount;
+    private int _messageCount;
+    private long _totalBytesSent;
     private readonly System.Timers.Timer _timer;
 
     #endregion
