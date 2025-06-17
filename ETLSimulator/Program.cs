@@ -34,13 +34,13 @@ IntegrationController totalDataController
 //       maxCount: TRANSPORT_MAX_COUNT);
 //});
 
-const int REDIS_MILLI_SECONDS = 5;
-const int REDIS_MAX_COUNT = 1;
+const int REDIS_MILLI_SECONDS = 5000;
+const int REDIS_MAX_COUNT = 5;
 const string MQTT_TOPIC = "testData/MyFactory";
 
 _ = Task.Run(async () =>
 {
-    await totalDataController.SendRedisTestLoop(
+    await totalDataController.SendRedisBulkTestLoop(
        topic: MQTT_TOPIC,
        milliseconds: REDIS_MILLI_SECONDS,
        maxCount: REDIS_MAX_COUNT);

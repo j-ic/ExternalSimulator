@@ -171,7 +171,77 @@ public class IntegrationController
         }
     }
 
+    public async Task SendRedisBulkTestLoop(string topic, uint milliseconds, int maxCount)
+    {
+        // Convert milliseconds to int
+        int millisecondInt = (int)milliseconds;
+
+        while (true)
+        {
+
+            int lineNumber = Random.Shared.Next(1, 21);
+            string lineName = $"Line{lineNumber:D2}";
+            string randomTopic = $"{topic}/{lineName}";
+
+            Dictionary<string, List<RedisBulkTestDto>> redisBulkDict
+                = await Task.Run(() => CreateRedisBulkList(maxCount, lineName));
+
+            string payloadString = JsonSerializer.Serialize(redisBulkDict);
+
+            // Calculate payload size
+            int payloadSize
+                = System.Text.Encoding.UTF8.GetByteCount(payloadString);
+            // Log payload size
+            Interlocked.Add(ref _totalBytesSent, payloadSize);
+
+            await PublishMqtt(randomTopic, payloadString);
+
+            Interlocked.Increment(ref _messageCount);
+
+            await Task.Delay(millisecondInt);
+        }
+    }
+
     #region Private Methods
+    private static Dictionary<string, List<RedisBulkTestDto>> CreateRedisBulkList(int count, string lineName)
+    {
+        // Create Redis bulk list
+        List<RedisBulkTestDto> redisBulkList = [];
+
+
+        // Loop to create Redis bulk data
+        for (int i = 0; i < count; i++)
+        {
+            // Create Redis bulk data
+            var redisBulkDto = new RedisBulkTestDto(
+                MachineId: $"Machine{Random.Shared.Next(1, 3126)}",
+                Temperature: Random.Shared.Next(0, 666),
+                Humidity: Random.Shared.Next(0, 100),
+                Vibration: Random.Shared.NextSingle() * 100f,
+                Pressure: Random.Shared.NextSingle() * 100f,
+                MotorCurrent: Random.Shared.Next(0, 100),
+                MotorVoltage: Random.Shared.Next(0, 100),
+                SpindleSpeed: Random.Shared.Next(0, 100),
+                FeedRate: Random.Shared.Next(0, 100),
+                OilLevel: Random.Shared.Next(0, 100),
+                CoolantTemp: Random.Shared.NextSingle() * 100f,
+                ProductCount: Random.Shared.Next(0, 1000),
+                ErrorCode: "E" + Random.Shared.Next(1000, 9999).ToString(),
+                IsRunning: Random.Shared.Next(0, 2) == 1,
+                DoorOpen: Random.Shared.Next(0, 2) == 1,
+                OverheatWarning: Random.Shared.Next(0, 2) == 1,
+                Hehe: Random.Shared.Next(0, 2) == 1);
+            // Add Redis bulk data to list
+            redisBulkList.Add(redisBulkDto);
+        }
+        // Create dictionary with Redis bulk list
+        Dictionary<string, List<RedisBulkTestDto>> dict = new()
+        {
+            [lineName] = redisBulkList
+        };
+
+        return dict;
+    }
 
     private static Dictionary<string, List<Transport>> CreateTransportList(int count)
     {
