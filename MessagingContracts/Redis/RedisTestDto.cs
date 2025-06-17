@@ -10,10 +10,10 @@ public record RedisTestDto(
     int SpindleSpeed,
     int FeedRate,
     int OilLevel,
-    float CoolantTemperature,
+    float CoolantTemp,
     int ProductCount,
     string ErrorCode,
     bool IsRunning,
     bool DoorOpen,
-    bool OverHeatingWarning,
+    bool OverheatWarning,
     bool Hehe);
