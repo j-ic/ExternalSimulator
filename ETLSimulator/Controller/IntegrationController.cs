@@ -40,7 +40,7 @@ public class IntegrationController
         };
 
         // Timer for printing message count
-        _timer = new System.Timers.Timer(TimeSpan.FromMinutes(1));
+        _timer = new System.Timers.Timer(TimeSpan.FromSeconds(5));
         _timer.Elapsed += PrintMessageCount;
         _timer.Start();
     }
