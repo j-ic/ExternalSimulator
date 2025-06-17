@@ -40,7 +40,7 @@ public class IntegrationController
         };
 
         // Timer for printing message count
-        _timer = new System.Timers.Timer(TimeSpan.FromMinutes(1));
+        _timer = new System.Timers.Timer(TimeSpan.FromSeconds(5));
         _timer.Elapsed += PrintMessageCount;
         _timer.Start();
     }
@@ -142,12 +142,12 @@ public class IntegrationController
                 SpindleSpeed: Random.Shared.Next(0, 100),
                 FeedRate: Random.Shared.Next(0, 100),
                 OilLevel: Random.Shared.Next(0, 100),
-                CoolantTemperature: Random.Shared.NextSingle() * 100f,
+                CoolantTemp: Random.Shared.NextSingle() * 100f,
                 ProductCount: Random.Shared.Next(0, 1000),
                 ErrorCode: "E" + Random.Shared.Next(1000, 9999).ToString(),
                 IsRunning: Random.Shared.Next(0, 2) == 1,
                 DoorOpen: Random.Shared.Next(0, 2) == 1,
-                OverHeatingWarning: Random.Shared.Next(0, 2) == 1,
+                OverheatWarning: Random.Shared.Next(0, 2) == 1,
                 Hehe: Random.Shared.Next(0, 2) == 1);
 
             string payloadString = JsonSerializer.Serialize(redisDto);
@@ -155,7 +155,7 @@ public class IntegrationController
             int lineNumber = Random.Shared.Next(1, 21);
             int machineNumber = Random.Shared.Next(1, 3126);
             string randomTopic
-                = $"{topic}/Line{lineNumber:D2}/{machineNumber}";
+                = $"{topic}/Line{lineNumber:D2}/Machine{machineNumber}";
 
             // Calculate payload size
             int payloadSize 
